@@ -267,8 +267,11 @@ df_fin[df_fin.duplicated(['client_id', 'lead_id'], keep=False)].head()
 # Удалим дубликаты по паре атрибутов client_id, lead_id,
 # чтобы не смотря на наши предыдущие условия на один лид не атрибутировались
 # несколько покупок одного клиента, пусть они и в течении 15 дней от лида
+# Убираю дубликаты отсортирую по purchase_created_at, чтобы оставить первую покупку
+# По-хорошему еще нужно было время покупки, чтобы покупки отсортировались и внутри дня,
+# чтобы точно сатрибутировать только первую покупку на лида
 
-df_fin = df_fin.drop_duplicates(['client_id', 'lead_id'])
+df_fin = df_fin.sort_values(by='purchase_created_at').drop_duplicates(['client_id', 'lead_id'])
 print(df_fin.shape)
 df_fin.head()
 
